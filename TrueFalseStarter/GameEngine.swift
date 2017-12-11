@@ -53,7 +53,7 @@ class GameEngine {
     
     func reset() {
         questionProvider = QuestionProvider()
-        currentQuestion = nextQuestion()
+        currentQuestion = nil
         questionsAsked = 0
         correctAnswers = 0
     }

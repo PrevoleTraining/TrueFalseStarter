@@ -14,6 +14,21 @@ class ViewController: UIViewController {
     
     var gameSound: SystemSoundID = 0
     
+    enum SoundName: String {
+        case START_GAME
+        case START_PLAY
+        case CORRECT
+        case WRONG
+        case WIN_PLAY
+    }
+    
+    var sounds: [SoundName: (path: String, sound: SystemSoundID)] = [
+        SoundName.CORRECT: (path: "r2d2-yeah", sound: 0),
+        SoundName.WRONG: (path: "chewy-roar", sound: 0),
+        SoundName.START_PLAY: (path: "light-saber-on", sound: 0),
+        SoundName.START_GAME: (path: "red-alert", sound: 0)
+    ]
+    
     let wrongAnswerColor: UIColor = UIColor(red: 199/255, green: 64/255, blue: 40/255, alpha: 1)
     let correctAnswerColor: UIColor = UIColor(red: 30/255, green: 141/255, blue: 61/255, alpha: 1)
     let normalAnswerColor: UIColor = UIColor(red: 12/255, green: 121/255, blue: 150/255, alpha: 1)
@@ -35,7 +50,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadGameStartSound()
+        loadGameSounds()
+        
+        playSound(with: SoundName.START_GAME)
         
         answerButtons = [
             firstAnswerButton,
@@ -43,8 +60,6 @@ class ViewController: UIViewController {
             thirdAnswerButton,
             fourthAnswerButton
         ]
-        
-        playGameStartSound()
         
         displayGameModes(with: "Choose which type of game you want to play")
     }
@@ -96,6 +111,8 @@ class ViewController: UIViewController {
     }
     
     func startGame() {
+        playSound(with: SoundName.START_PLAY)
+
         gameModesView.isHidden = true
         gameEngine.reset()
         displayQuestion()
@@ -121,8 +138,10 @@ class ViewController: UIViewController {
         }
         
         if (isAnswerCorrect) {
+            playSound(with: SoundName.CORRECT)
             questionField.text = "Correct!"
         } else {
+            playSound(with: SoundName.WRONG)
             questionField.text = "Sorry, wrong answer!"
         }
         
@@ -151,14 +170,16 @@ class ViewController: UIViewController {
         }
     }
     
-    func loadGameStartSound() {
-        let pathToSoundFile = Bundle.main.path(forResource: "GameSound", ofType: "wav")
-        let soundURL = URL(fileURLWithPath: pathToSoundFile!)
-        AudioServicesCreateSystemSoundID(soundURL as CFURL, &gameSound)
+    func loadGameSounds() {
+        for (name, soundDef) in sounds {
+            let pathToSoundFile = Bundle.main.path(forResource: soundDef.path, ofType: "wav", inDirectory: "sounds")
+            let soundURL = URL(fileURLWithPath: pathToSoundFile!)
+            AudioServicesCreateSystemSoundID(soundURL as CFURL, &(sounds[name]!.sound))
+        }
     }
     
-    func playGameStartSound() {
-        AudioServicesPlaySystemSound(gameSound)
+    func playSound(with soundName: SoundName) {
+        AudioServicesPlaySystemSound(sounds[soundName]!.sound)
     }
 }
 
