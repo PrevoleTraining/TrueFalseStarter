@@ -12,7 +12,7 @@ class QuestionProvider {
     let questions: [Question] = [
         Question(label: "Only female koalas can whistle", answerChoices: ["True", "False" ], validAnswer: 1),
         Question(label: "Blue whales are technically whales", answerChoices: ["True", "False"], validAnswer: 0),
-        Question(label: "Camels are cannibalistic", answerChoices: ["True", "False"], validAnswer: 1),
+        Question(label: "Camels are cannibalistic", answerChoices: ["True", "False", "Sure", "Not sure"], validAnswer: 1),
         Question(label: "All ducks are birds", answerChoices: ["True", "False", "Maybe"], validAnswer: 0)
     ]
     

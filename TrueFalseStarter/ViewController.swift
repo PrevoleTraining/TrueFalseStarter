@@ -41,8 +41,6 @@ class ViewController: UIViewController {
             fourthAnswerButton
         ]
         
-        hideAnswerButtons()
-        
         playGameStartSound()
         
         displayQuestion()
@@ -54,6 +52,8 @@ class ViewController: UIViewController {
     }
     
     func displayQuestion() {
+        hideAnswerButtons()
+        
         playAgainButtonView.isHidden = true
 
         let question: Question = gameEngine.nextQuestion()
