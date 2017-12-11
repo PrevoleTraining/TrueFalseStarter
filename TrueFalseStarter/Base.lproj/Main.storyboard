@@ -27,8 +27,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="c5y-sn-hxv" userLabel="Lightning Timesup Progress Bar">
-                                <rect key="frame" x="0.0" y="35" width="320" height="5"/>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="c5y-sn-hxv" userLabel="Lightning Timesup Progress Bar">
+                                <rect key="frame" x="-10" y="35" width="330" height="6"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="r0w-7c-dsi"/>
                                 </constraints>
@@ -156,7 +156,7 @@
                             <constraint firstAttribute="trailing" secondItem="Bci-6g-xgp" secondAttribute="trailing" constant="20" id="alT-pL-NQS"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Bci-6g-xgp" secondAttribute="bottom" constant="20" id="hmm-NI-1of"/>
                             <constraint firstItem="c5y-sn-hxv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15" id="kaj-ng-5Pc"/>
-                            <constraint firstItem="c5y-sn-hxv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="szn-PZ-gNd"/>
+                            <constraint firstItem="c5y-sn-hxv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="-10" id="szn-PZ-gNd"/>
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>

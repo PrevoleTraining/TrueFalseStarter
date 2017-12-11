@@ -12,9 +12,6 @@ import GameKit
 import AudioToolbox
 
 class ViewController: UIViewController {
-    // Make sure the lightning progress bar ends at the same time the time's up timer
-    let strangeCoeficientToMakeProgBarEndInTime = 0.9
-    
     let nextRoundDelay = 2
 
     // Enum is great for refactorings
@@ -38,9 +35,14 @@ class ViewController: UIViewController {
     ]
     
     // Colors for buttons and texts
-    let wrongAnswerColor: UIColor = UIColor(red: 199/255, green: 64/255, blue: 40/255, alpha: 1)
-    let correctAnswerColor: UIColor = UIColor(red: 30/255, green: 141/255, blue: 61/255, alpha: 1)
-    let normalAnswerColor: UIColor = UIColor(red: 12/255, green: 121/255, blue: 150/255, alpha: 1)
+    let wrongAnswerColor = UIColor(red: 199/255, green: 64/255, blue: 40/255, alpha: 1)
+    let correctAnswerColor = UIColor(red: 30/255, green: 141/255, blue: 61/255, alpha: 1)
+    let normalAnswerColor = UIColor(red: 12/255, green: 121/255, blue: 150/255, alpha: 1)
+    
+    // Colors for lightning progress bar
+    let greenProgressColor = UIColor(red: 12/255, green: 187/255, blue: 6/255, alpha: 1)
+    let orangeProgressColor = UIColor(red: 254/255, green: 90/255, blue: 29/255, alpha: 1)
+    let redProgressColor = UIColor(red: 220/255, green: 20/255, blue: 60/255, alpha: 1)
     
     // Game engin
     let gameEngine = GameEngine(numberOfQuestions: 4, winThreshold: 50)
@@ -51,11 +53,11 @@ class ViewController: UIViewController {
     // Game mode state
     var isLightningMode: Bool = false
     var lightningProgressTimer: Timer?
-    var lightningEndGameWork: DispatchWorkItem?
     
     // Lightning mode delays
-    let lightningTimesupDelay = 15
-    let lightningProgressInterval = 0.1
+    let lightningTimesupDelay = Float(15.0) // 15 seconds
+    let lightningProgressInterval = Float(0.1) // 1/10 second
+    var lightningProgressCountdownSlice = Float(1.0) // Default value, will be calculate in viewDidLoad: 1.0 / 15 / 1/10 -> 1.0 / 150.0
     
     // MARK: Controls
 
@@ -72,6 +74,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        lightningProgressCountdownSlice = Float(1.0) / (lightningTimesupDelay / lightningProgressInterval)
         
         // Load all the sounds of the app
         loadGameSounds()
@@ -127,8 +131,8 @@ class ViewController: UIViewController {
         if isLightningMode {
             lightningTimesupProgressBar.progress = 1.0
             lightningTimesupProgressBar.isHidden = false
-            lightningProgressTimer = Timer.scheduledTimer(timeInterval: lightningProgressInterval, target: self, selector: #selector(ViewController.updateProgressBar), userInfo: nil, repeats: true)
-            startTimesupQuestionWork()
+            lightningTimesupProgressBar.tintColor = greenProgressColor
+            lightningProgressTimer = Timer.scheduledTimer(timeInterval: TimeInterval(lightningProgressInterval), target: self, selector: #selector(ViewController.updateProgressBar), userInfo: nil, repeats: true)
         }
     }
     
@@ -233,11 +237,6 @@ class ViewController: UIViewController {
      * UI Action to check if the user has correctly answered a question
      */
     @IBAction func checkAnswer(_ sender: UIButton) {
-        // Cancel the time's up timer as the user has answered the question before the end of timer
-        if isLightningMode {
-            lightningEndGameWork?.cancel()
-        }
-        
         var isAnswerCorrect: Bool
         
         // Retrieve the answer from user
@@ -274,8 +273,18 @@ class ViewController: UIViewController {
      * Update the progress bar to reflect the time's up countdown
      */
     func updateProgressBar() {
-        //
-        lightningTimesupProgressBar.progress -= Float(strangeCoeficientToMakeProgBarEndInTime / (Double(lightningTimesupDelay) / lightningProgressInterval))
+        if lightningTimesupProgressBar.progress <= 0.0 {
+            timesUp()
+        }
+        
+        // Reduce a small amount of the progress each time
+        lightningTimesupProgressBar.progress -= lightningProgressCountdownSlice
+        
+        if lightningTimesupProgressBar.progress < 1.0 / 3.0 {
+            lightningTimesupProgressBar.tintColor = redProgressColor
+        } else if lightningTimesupProgressBar.progress < 2.0 / 3.0 {
+            lightningTimesupProgressBar.tintColor = orangeProgressColor
+        }
     }
     
     /*
@@ -305,17 +314,6 @@ class ViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: calculateDispatchTime(seconds: seconds)) {
             self.nextRound()
         }
-    }
-    
-    /*
-     * Time's up delay. At the end of the delay, the question is marked as failed
-     */
-    func startTimesupQuestionWork() {
-        lightningEndGameWork = DispatchWorkItem(block: {
-            self.timesUp()
-        })
-        
-        DispatchQueue.main.asyncAfter(deadline: calculateDispatchTime(seconds: lightningTimesupDelay), execute: lightningEndGameWork!)
     }
     
     /*
