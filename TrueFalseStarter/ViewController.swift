@@ -14,6 +14,10 @@ class ViewController: UIViewController {
     
     var gameSound: SystemSoundID = 0
     
+    let wrongAnswerColor: UIColor = UIColor(red: 199/255, green: 64/255, blue: 40/255, alpha: 1)
+    let correctAnswerColor: UIColor = UIColor(red: 30/255, green: 141/255, blue: 61/255, alpha: 1)
+    let normalAnswerColor: UIColor = UIColor(red: 12/255, green: 121/255, blue: 150/255, alpha: 1)
+    
     // TODO: Replace this magic number by proper constant
     let gameEngine = GameEngine(numberOfQuestions: 4)
     
@@ -79,6 +83,7 @@ class ViewController: UIViewController {
         // Show the answer buttons
         for btn in answerButtons {
             btn.isHidden = true
+            btn.backgroundColor = normalAnswerColor
         }
     }
     
@@ -91,6 +96,14 @@ class ViewController: UIViewController {
             case thirdAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 2)
             case fourthAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 3)
             default: isAnswerCorrect = false
+        }
+        
+        for btnIdx in 0..<answerButtons.count {
+            if gameEngine.isValidAnswer(with: btnIdx) {
+                answerButtons[btnIdx].backgroundColor = correctAnswerColor
+            } else {
+                answerButtons[btnIdx].backgroundColor = wrongAnswerColor
+            }
         }
         
         if (isAnswerCorrect) {

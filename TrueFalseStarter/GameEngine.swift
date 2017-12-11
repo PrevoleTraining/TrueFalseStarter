@@ -30,15 +30,25 @@ class GameEngine {
         return questionsAsked < numberOfQuestions && questionProvider.areQuestionsAvailable()
     }
     
+    ///
+    /// Answer the question and manage the game statistics
+    ///
     func answerQuestion(with answer: Int) -> Bool {
         questionsAsked += 1
         
-        if answer == currentQuestion.validAnswer {
+        if isValidAnswer(with: answer) {
             correctAnswers += 1
             return true
         } else {
             return false
         }
+    }
+    
+    ///
+    /// Check if the answer is valid or not
+    ///
+    func isValidAnswer(with answer: Int) -> Bool {
+        return answer == currentQuestion.validAnswer
     }
     
     func reset() {
