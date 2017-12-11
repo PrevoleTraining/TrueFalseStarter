@@ -30,7 +30,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Bci-6g-xgp">
                                 <rect key="frame" x="20" y="40" width="280" height="508"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddO-me-3bO">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddO-me-3bO" userLabel="Question View">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="100"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sample Question" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I3V-ih-1Ky">
@@ -105,30 +105,40 @@
                                             <constraint firstAttribute="height" constant="1" id="Igl-Oy-bMe"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4Y-Mz-ZS1">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="wb0-Ou-Q37" userLabel="Game Modes View">
                                         <rect key="frame" x="0.0" y="358" width="280" height="150"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K17-uy-MvB">
-                                                <rect key="frame" x="0.0" y="50" width="280" height="50"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K17-uy-MvB" userLabel="Normal Mode Button">
+                                                <rect key="frame" x="0.0" y="0.0" width="280" height="50"/>
                                                 <color key="backgroundColor" red="0.0" green="0.57647058823529407" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="lFw-8a-L8h"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="Play Again"/>
+                                                <state key="normal" title="Normal Mode"/>
                                                 <connections>
-                                                    <action selector="playAgain" destination="BYZ-38-t0r" eventType="touchUpInside" id="klz-B2-JAN"/>
+                                                    <action selector="startNormalGame" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Ds-zS-j5T"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iFO-dP-cdj" userLabel="Lightning Mode Button">
+                                                <rect key="frame" x="0.0" y="100" width="280" height="50"/>
+                                                <color key="backgroundColor" red="0.0" green="0.57647058819999997" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="EVU-FX-XSc"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <state key="normal" title="Lightning Mode"/>
+                                                <connections>
+                                                    <action selector="startLightningGame" destination="BYZ-38-t0r" eventType="touchUpInside" id="yJc-EG-4KH"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="K17-uy-MvB" secondAttribute="trailing" id="DeO-RC-gcL"/>
-                                            <constraint firstAttribute="height" constant="150" id="GmL-Km-UTY"/>
-                                            <constraint firstItem="K17-uy-MvB" firstAttribute="leading" secondItem="o4Y-Mz-ZS1" secondAttribute="leading" id="R5g-Qd-36y"/>
-                                            <constraint firstItem="K17-uy-MvB" firstAttribute="centerY" secondItem="o4Y-Mz-ZS1" secondAttribute="centerY" id="c7n-Ph-bCs"/>
+                                            <constraint firstAttribute="height" constant="150" id="wsB-OA-BVN"/>
                                         </constraints>
-                                    </view>
+                                    </stackView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -144,8 +154,7 @@
                     <connections>
                         <outlet property="firstAnswerButton" destination="J1V-MS-ECi" id="FUB-Fs-IIj"/>
                         <outlet property="fourthAnswerButton" destination="al7-On-K5R" id="bpS-bv-kcS"/>
-                        <outlet property="playAgainButton" destination="K17-uy-MvB" id="0Bx-Cm-ye0"/>
-                        <outlet property="playAgainButtonView" destination="o4Y-Mz-ZS1" id="EsA-68-Veq"/>
+                        <outlet property="gameModesView" destination="wb0-Ou-Q37" id="uFs-B0-v23"/>
                         <outlet property="questionField" destination="I3V-ih-1Ky" id="7UI-o2-ATi"/>
                         <outlet property="secondAnswerButton" destination="AS4-HX-g9f" id="tJW-XD-Qe6"/>
                         <outlet property="thirdAnswerButton" destination="zJV-FB-7hK" id="eGo-Og-yQJ"/>

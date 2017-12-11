@@ -28,9 +28,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var thirdAnswerButton: UIButton!
     @IBOutlet weak var fourthAnswerButton: UIButton!
     
-    @IBOutlet weak var playAgainButton: UIButton!
-    @IBOutlet weak var playAgainButtonView: UIView!
-
+    @IBOutlet weak var gameModesView: UIStackView!
+    
     var answerButtons: [UIButton] = []
     
     override func viewDidLoad() {
@@ -47,7 +46,7 @@ class ViewController: UIViewController {
         
         playGameStartSound()
         
-        displayQuestion()
+        displayGameModes(with: "Choose which type of game you want to play")
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,11 +54,15 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func displayGameModes(with text: String) {
+        gameModesView.isHidden = false
+        hideAnswerButtons()
+        questionField.text = text
+    }
+    
     func displayQuestion() {
         hideAnswerButtons()
         
-        playAgainButtonView.isHidden = true
-
         let question: Question = gameEngine.nextQuestion()
         questionField.text = question.label
         
@@ -71,12 +74,7 @@ class ViewController: UIViewController {
     }
     
     func displayScore() {
-        hideAnswerButtons()
-        
-        // Display play again button
-        playAgainButtonView.isHidden = false
-        
-        questionField.text = "Way to go!\nYou got \(gameEngine.correctAnswers) out of \(gameEngine.numberOfQuestions) correct!"
+        displayGameModes(with: "Way to go!\nYou got \(gameEngine.correctAnswers) out of \(gameEngine.numberOfQuestions) correct!")
     }
    
     func hideAnswerButtons() {
@@ -85,6 +83,22 @@ class ViewController: UIViewController {
             btn.isHidden = true
             btn.backgroundColor = normalAnswerColor
         }
+    }
+    
+    func nextRound() {
+        if gameEngine.hasMoreQuestions() {
+            // Continue game
+            displayQuestion()
+        } else {
+            // Game is over
+            displayScore()
+        }
+    }
+    
+    func startGame() {
+        gameModesView.isHidden = true
+        gameEngine.reset()
+        displayQuestion()
     }
     
     @IBAction func checkAnswer(_ sender: UIButton) {
@@ -115,22 +129,12 @@ class ViewController: UIViewController {
         loadNextRoundWithDelay(seconds: 2)
     }
     
-    func nextRound() {
-        if gameEngine.hasMoreQuestions() {
-            // Continue game
-            displayQuestion()
-        } else {
-            // Game is over
-            displayScore()
-        }
+    @IBAction func startNormalGame() {
+        startGame()
     }
     
-    @IBAction func playAgain() {
-        hideAnswerButtons()
-        
-        gameEngine.reset()
-        
-        nextRound()
+    @IBAction func startLightningGame() {
+        startGame()
     }
 
     // MARK: Helper Methods
