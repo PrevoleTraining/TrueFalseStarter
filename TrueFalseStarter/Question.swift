@@ -2,10 +2,15 @@
 //  Question.swift
 //  TrueFalseStarter
 //
-//  Created by lprevost on 05.12.17.
-//  Copyright © 2017 Treehouse. All rights reserved.
+//  Created by PrevoleTraining on 05.12.17.
+//  Copyright © 2017 PrevoleTraining. All rights reserved.
 //
 
+///
+/// A question is compsed from a label that is used to ask the question to the user,
+/// a collection of possible answers and the valid answer which is the index of the
+/// answer into the answer choices.
+///
 class Question {
     let label: String
     let answerChoices: [String]

@@ -27,6 +27,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="c5y-sn-hxv" userLabel="Lightning Timesup Progress Bar">
+                                <rect key="frame" x="0.0" y="35" width="320" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="5" id="r0w-7c-dsi"/>
+                                </constraints>
+                            </progressView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Bci-6g-xgp">
                                 <rect key="frame" x="20" y="40" width="280" height="508"/>
                                 <subviews>
@@ -146,8 +152,11 @@
                         <constraints>
                             <constraint firstItem="Bci-6g-xgp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="9WE-0m-KAc"/>
                             <constraint firstItem="Bci-6g-xgp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="Kv7-7z-Blw"/>
+                            <constraint firstAttribute="trailing" secondItem="c5y-sn-hxv" secondAttribute="trailing" id="Y7w-6u-af7"/>
                             <constraint firstAttribute="trailing" secondItem="Bci-6g-xgp" secondAttribute="trailing" constant="20" id="alT-pL-NQS"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Bci-6g-xgp" secondAttribute="bottom" constant="20" id="hmm-NI-1of"/>
+                            <constraint firstItem="c5y-sn-hxv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15" id="kaj-ng-5Pc"/>
+                            <constraint firstItem="c5y-sn-hxv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="szn-PZ-gNd"/>
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -155,6 +164,7 @@
                         <outlet property="firstAnswerButton" destination="J1V-MS-ECi" id="FUB-Fs-IIj"/>
                         <outlet property="fourthAnswerButton" destination="al7-On-K5R" id="bpS-bv-kcS"/>
                         <outlet property="gameModesView" destination="wb0-Ou-Q37" id="uFs-B0-v23"/>
+                        <outlet property="lightningTimesupProgressBar" destination="c5y-sn-hxv" id="xhw-Io-mhX"/>
                         <outlet property="questionField" destination="I3V-ih-1Ky" id="7UI-o2-ATi"/>
                         <outlet property="secondAnswerButton" destination="AS4-HX-g9f" id="tJW-XD-Qe6"/>
                         <outlet property="thirdAnswerButton" destination="zJV-FB-7hK" id="eGo-Og-yQJ"/>
