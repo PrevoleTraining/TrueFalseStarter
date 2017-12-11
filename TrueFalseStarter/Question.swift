@@ -8,12 +8,12 @@
 
 class Question {
     let label: String
-    let options: [String]
-    let answer: Int
+    let answerChoices: [String]
+    let validAnswer: Int
     
-    init(label: String, options: [String], answer: Int) {
+    init(label: String, answerChoices: [String], validAnswer: Int) {
         self.label = label
-        self.options = options
-        self.answer = answer
+        self.answerChoices = answerChoices
+        self.validAnswer = validAnswer
     }
 }

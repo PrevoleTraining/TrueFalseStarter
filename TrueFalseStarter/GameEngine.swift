@@ -35,7 +35,7 @@ class GameEngine {
     func answerQuestion(with answer: Int) -> Bool {
         questionsAsked += 1
         
-        if answer == currentQuestion.answer {
+        if answer == currentQuestion.validAnswer {
             correctAnswers += 1
             return true
         } else {

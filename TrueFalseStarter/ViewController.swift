@@ -18,15 +18,33 @@ class ViewController: UIViewController {
     let gameEngine = GameEngine(numberOfQuestions: 4)
     
     @IBOutlet weak var questionField: UILabel!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
+    
+    @IBOutlet weak var firstAnswerButton: UIButton!
+    @IBOutlet weak var secondAnswerButton: UIButton!
+    @IBOutlet weak var thirdAnswerButton: UIButton!
+    @IBOutlet weak var fourthAnswerButton: UIButton!
+    
     @IBOutlet weak var playAgainButton: UIButton!
+    @IBOutlet weak var playAgainButtonView: UIView!
 
+    var answerButtons: [UIButton] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         loadGameStartSound()
-        // Start game
+        
+        answerButtons = [
+            firstAnswerButton,
+            secondAnswerButton,
+            thirdAnswerButton,
+            fourthAnswerButton
+        ]
+        
+        hideAnswerButtons()
+        
         playGameStartSound()
+        
         displayQuestion()
     }
 
@@ -36,28 +54,42 @@ class ViewController: UIViewController {
     }
     
     func displayQuestion() {
+        playAgainButtonView.isHidden = true
+
         let question: Question = gameEngine.nextQuestion()
         questionField.text = question.label
-        playAgainButton.isHidden = true
+        
+        for choiceIdx in 0..<question.answerChoices.count {
+            let btn = answerButtons[choiceIdx]
+            btn.setTitle(question.answerChoices[choiceIdx], for: UIControlState.normal)
+            btn.isHidden = false
+        }
     }
     
     func displayScore() {
-        // Hide the answer buttons
-        trueButton.isHidden = true
-        falseButton.isHidden = true
+        hideAnswerButtons()
         
         // Display play again button
-        playAgainButton.isHidden = false
+        playAgainButtonView.isHidden = false
         
         questionField.text = "Way to go!\nYou got \(gameEngine.correctAnswers) out of \(gameEngine.numberOfQuestions) correct!"
+    }
+   
+    func hideAnswerButtons() {
+        // Show the answer buttons
+        for btn in answerButtons {
+            btn.isHidden = true
+        }
     }
     
     @IBAction func checkAnswer(_ sender: UIButton) {
         var isAnswerCorrect: Bool
         
         switch (sender) {
-            case trueButton: isAnswerCorrect = gameEngine.answerQuestion(with: 0)
-            case falseButton: isAnswerCorrect = gameEngine.answerQuestion(with: 1)
+            case firstAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 0)
+            case secondAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 1)
+            case thirdAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 2)
+            case fourthAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 3)
             default: isAnswerCorrect = false
         }
         
@@ -81,10 +113,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func playAgain() {
-        // Show the answer buttons
-        trueButton.isHidden = false
-        falseButton.isHidden = false
-
+        hideAnswerButtons()
+        
         gameEngine.reset()
         
         nextRound()
