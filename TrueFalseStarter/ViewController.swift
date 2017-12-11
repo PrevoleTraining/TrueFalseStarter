@@ -47,6 +47,12 @@ class ViewController: UIViewController {
     
     var answerButtons: [UIButton] = []
     
+    var isLightningMode: Bool = false
+    
+    let lightningTimesupDelay = 15
+    
+    var lightningEndGameWork: DispatchWorkItem?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -86,6 +92,10 @@ class ViewController: UIViewController {
             btn.setTitle(question.answerChoices[choiceIdx], for: UIControlState.normal)
             btn.isHidden = false
         }
+        
+        if isLightningMode {
+            startTimesupQuestionWork()
+        }
     }
     
     func displayScore() {
@@ -98,6 +108,26 @@ class ViewController: UIViewController {
             btn.isHidden = true
             btn.backgroundColor = normalAnswerColor
         }
+    }
+    
+    func handleQuestionAnswered(isCorrect: Bool) {
+        for btnIdx in 0..<answerButtons.count {
+            if gameEngine.isValidAnswer(with: btnIdx) {
+                answerButtons[btnIdx].backgroundColor = correctAnswerColor
+            } else {
+                answerButtons[btnIdx].backgroundColor = wrongAnswerColor
+            }
+        }
+        
+        if (isCorrect) {
+            playSound(with: SoundName.CORRECT)
+            questionField.text = "Correct!"
+        } else {
+            playSound(with: SoundName.WRONG)
+            questionField.text = "Sorry, wrong answer!"
+        }
+        
+        loadNextRoundWithDelay(seconds: 2)
     }
     
     func nextRound() {
@@ -118,7 +148,16 @@ class ViewController: UIViewController {
         displayQuestion()
     }
     
+    func timesUp() {
+        gameEngine.failQuestion()
+        handleQuestionAnswered(isCorrect: false)
+    }
+    
     @IBAction func checkAnswer(_ sender: UIButton) {
+        if isLightningMode {
+            lightningEndGameWork?.cancel()
+        }
+        
         var isAnswerCorrect: Bool
         
         switch (sender) {
@@ -129,45 +168,41 @@ class ViewController: UIViewController {
             default: isAnswerCorrect = false
         }
         
-        for btnIdx in 0..<answerButtons.count {
-            if gameEngine.isValidAnswer(with: btnIdx) {
-                answerButtons[btnIdx].backgroundColor = correctAnswerColor
-            } else {
-                answerButtons[btnIdx].backgroundColor = wrongAnswerColor
-            }
-        }
-        
-        if (isAnswerCorrect) {
-            playSound(with: SoundName.CORRECT)
-            questionField.text = "Correct!"
-        } else {
-            playSound(with: SoundName.WRONG)
-            questionField.text = "Sorry, wrong answer!"
-        }
-        
-        loadNextRoundWithDelay(seconds: 2)
+        handleQuestionAnswered(isCorrect: isAnswerCorrect)
     }
     
     @IBAction func startNormalGame() {
+        isLightningMode = false
         startGame()
     }
     
     @IBAction func startLightningGame() {
+        isLightningMode = true
         startGame()
     }
 
     // MARK: Helper Methods
-    
-    func loadNextRoundWithDelay(seconds: Int) {
+
+    func calculateDispatchTime(seconds: Int) -> DispatchTime {
         // Converts a delay in seconds to nanoseconds as signed 64 bit integer
         let delay = Int64(NSEC_PER_SEC * UInt64(seconds))
         // Calculates a time value to execute the method given current time and delay
-        let dispatchTime = DispatchTime.now() + Double(delay) / Double(NSEC_PER_SEC)
-        
+        return DispatchTime.now() + Double(delay) / Double(NSEC_PER_SEC)
+    }
+    
+    func loadNextRoundWithDelay(seconds: Int) {
         // Executes the nextRound method at the dispatch time on the main queue
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+        DispatchQueue.main.asyncAfter(deadline: calculateDispatchTime(seconds: seconds)) {
             self.nextRound()
         }
+    }
+    
+    func startTimesupQuestionWork() {
+        lightningEndGameWork = DispatchWorkItem(block: {
+            self.timesUp()
+        })
+        
+        DispatchQueue.main.asyncAfter(deadline: calculateDispatchTime(seconds: lightningTimesupDelay), execute: lightningEndGameWork!)
     }
     
     func loadGameSounds() {

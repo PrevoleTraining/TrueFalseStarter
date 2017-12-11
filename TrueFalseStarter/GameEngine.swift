@@ -44,6 +44,10 @@ class GameEngine {
         }
     }
     
+    func failQuestion() {
+        questionsAsked += 1
+    }
+    
     ///
     /// Check if the answer is valid or not
     ///
