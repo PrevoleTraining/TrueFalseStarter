@@ -14,7 +14,7 @@ class GameEngine {
     let numberOfQuestions: Int
     let winThreshold: Double
     
-    var questionProvider = QuestionProvider()
+    var questionProvider: QuestionProvider
     
     var currentQuestion: Question!
     
@@ -22,6 +22,7 @@ class GameEngine {
     var correctAnswers: Int = 0
     
     init(numberOfQuestions: Int, winThreshold: Double) {
+        self.questionProvider = QuestionProvider(numberOfQuestions: numberOfQuestions)
         self.numberOfQuestions = numberOfQuestions
         self.winThreshold = winThreshold
     }
@@ -84,14 +85,14 @@ class GameEngine {
     /// @return True if the game is finished and more than threshold questions are correctly answered
     ///
     func isVictory() -> Bool {
-        return Double(correctAnswers) / Double(questionProvider.totalPossibleQuestions()) * 100.0 >= winThreshold
+        return Double(correctAnswers) / Double(numberOfQuestions) * 100.0 >= winThreshold
     }
     
     ///
     /// Reset the game engine to start a new game
     ///
     func reset() {
-        questionProvider = QuestionProvider()
+        questionProvider = QuestionProvider(numberOfQuestions: numberOfQuestions)
         currentQuestion = nil
         questionsAsked = 0
         correctAnswers = 0

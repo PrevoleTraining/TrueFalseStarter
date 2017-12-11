@@ -44,8 +44,8 @@ class ViewController: UIViewController {
     let orangeProgressColor = UIColor(red: 254/255, green: 90/255, blue: 29/255, alpha: 1)
     let redProgressColor = UIColor(red: 220/255, green: 20/255, blue: 60/255, alpha: 1)
     
-    // Game engin
-    let gameEngine = GameEngine(numberOfQuestions: 4, winThreshold: 50)
+    // Game engine
+    let gameEngine = GameEngine(numberOfQuestions: 10, winThreshold: 60)
     
     // Collection of answer buttons. Easy to iterates on a collection.
     var answerButtons: [UIButton] = []
@@ -177,7 +177,7 @@ class ViewController: UIViewController {
         lightningTimesupProgressBar.isHidden = true
         
         // Stop the progress bar timer work
-        if lightningProgressTimer!.isValid {
+        if isLightningMode && lightningProgressTimer!.isValid {
             lightningProgressTimer!.invalidate()
         }
 
