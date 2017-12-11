@@ -27,6 +27,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stars" translatesAutoresizingMaskIntoConstraints="NO" id="6z4-4W-baX">
+                                <rect key="frame" x="0.0" y="-40" width="320" height="648"/>
+                            </imageView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="c5y-sn-hxv" userLabel="Lightning Timesup Progress Bar">
                                 <rect key="frame" x="-10" y="35" width="330" height="6"/>
                                 <constraints>
@@ -150,8 +153,12 @@
                         </subviews>
                         <color key="backgroundColor" red="0.031372549019607843" green="0.16862745098039217" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="6z4-4W-baX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8HW-mE-upn"/>
                             <constraint firstItem="Bci-6g-xgp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="9WE-0m-KAc"/>
+                            <constraint firstAttribute="trailing" secondItem="6z4-4W-baX" secondAttribute="trailing" id="H1F-h4-85Q"/>
                             <constraint firstItem="Bci-6g-xgp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="Kv7-7z-Blw"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="6z4-4W-baX" secondAttribute="bottom" constant="-40" id="QLf-7y-Muv"/>
+                            <constraint firstItem="6z4-4W-baX" firstAttribute="top" secondItem="c5y-sn-hxv" secondAttribute="bottom" constant="-80" id="UnP-4w-XV3"/>
                             <constraint firstAttribute="trailing" secondItem="c5y-sn-hxv" secondAttribute="trailing" id="Y7w-6u-af7"/>
                             <constraint firstAttribute="trailing" secondItem="Bci-6g-xgp" secondAttribute="trailing" constant="20" id="alT-pL-NQS"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Bci-6g-xgp" secondAttribute="bottom" constant="20" id="hmm-NI-1of"/>
@@ -172,7 +179,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="24.375" y="30"/>
+            <point key="canvasLocation" x="24.375" y="29.577464788732396"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="p5b-fp-SeU">
@@ -192,4 +199,7 @@
             </objects>
         </scene>
     </scenes>
+    <resources>
+        <image name="stars" width="640" height="360"/>
+    </resources>
 </document>
