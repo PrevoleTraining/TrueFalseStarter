@@ -7,20 +7,18 @@
 //
 
 class GameEngine {
-    let questionProvider: QuestionProvider
-    
     let numberOfQuestions: Int
     
-    var currentQuestion: Question
+    var questionProvider: QuestionProvider
+    
+    var currentQuestion: Question!
     
     var questionsAsked: Int = 0
     var correctAnswers: Int = 0
     
     init(numberOfQuestions: Int) {
         self.numberOfQuestions = numberOfQuestions
-        
         questionProvider = QuestionProvider()
-        currentQuestion = questionProvider.randomQuestion()
     }
     
     func nextQuestion() -> Question {
@@ -29,7 +27,7 @@ class GameEngine {
     }
     
     func hasMoreQuestions() -> Bool {
-        return questionsAsked < numberOfQuestions
+        return questionsAsked < numberOfQuestions && questionProvider.areQuestionsAvailable()
     }
     
     func answerQuestion(with answer: Int) -> Bool {
@@ -44,6 +42,7 @@ class GameEngine {
     }
     
     func reset() {
+        questionProvider = QuestionProvider()
         currentQuestion = nextQuestion()
         questionsAsked = 0
         correctAnswers = 0
