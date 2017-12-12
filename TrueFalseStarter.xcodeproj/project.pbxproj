@@ -16,6 +16,8 @@
 		FD01AAAA1FD735CC00156B45 /* QuestionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD01AAA91FD735CC00156B45 /* QuestionProvider.swift */; };
 		FD01AAAC1FD737DC00156B45 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD01AAAB1FD737DC00156B45 /* GameEngine.swift */; };
 		FD01AABD1FDEAEC300156B45 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = FD01AABC1FDEAEC300156B45 /* sounds */; };
+		FDBF47541FDFBF0600E78992 /* SoundEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBF47531FDFBF0600E78992 /* SoundEngine.swift */; };
+		FDBF47561FDFBF6600E78992 /* SoundName.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBF47551FDFBF6600E78992 /* SoundName.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		FD01AAA91FD735CC00156B45 /* QuestionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionProvider.swift; sourceTree = "<group>"; };
 		FD01AAAB1FD737DC00156B45 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		FD01AABC1FDEAEC300156B45 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		FDBF47531FDFBF0600E78992 /* SoundEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEngine.swift; sourceTree = "<group>"; };
+		FDBF47551FDFBF6600E78992 /* SoundName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,8 @@
 				FD01AAA71FD7354400156B45 /* Question.swift */,
 				FD01AAA91FD735CC00156B45 /* QuestionProvider.swift */,
 				FD01AAAB1FD737DC00156B45 /* GameEngine.swift */,
+				FDBF47531FDFBF0600E78992 /* SoundEngine.swift */,
+				FDBF47551FDFBF6600E78992 /* SoundName.swift */,
 			);
 			path = TrueFalseStarter;
 			sourceTree = "<group>";
@@ -155,6 +161,8 @@
 				FD01AAA81FD7354400156B45 /* Question.swift in Sources */,
 				97093D3E1C913506001275BC /* ViewController.swift in Sources */,
 				97093D3C1C913506001275BC /* AppDelegate.swift in Sources */,
+				FDBF47561FDFBF6600E78992 /* SoundName.swift in Sources */,
+				FDBF47541FDFBF0600E78992 /* SoundEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

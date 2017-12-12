@@ -9,31 +9,10 @@
 
 import UIKit
 import GameKit
-import AudioToolbox
 
 class ViewController: UIViewController {
     let nextRoundDelay = 2
 
-    // Enum is great for refactorings
-    enum SoundName: String {
-        case START_GAME
-        case START_PLAY
-        case CORRECT
-        case WRONG
-        case WIN_PLAY
-        case LOSE_PLAY
-    }
-    
-    // The collection of sounds
-    var sounds: [SoundName: (path: String, sound: SystemSoundID)] = [
-        SoundName.CORRECT: (path: "r2d2-yeah", sound: 0),
-        SoundName.WRONG: (path: "chewy-roar", sound: 0),
-        SoundName.START_PLAY: (path: "light-saber-on", sound: 0),
-        SoundName.START_GAME: (path: "red-alert", sound: 0),
-        SoundName.LOSE_PLAY: (path: "jabba", sound: 0),
-        SoundName.WIN_PLAY: (path: "throne-room-really-short", sound: 0)
-    ]
-    
     // Colors for buttons and texts
     let wrongAnswerColor = UIColor(red: 199/255, green: 64/255, blue: 40/255, alpha: 1)
     let correctAnswerColor = UIColor(red: 30/255, green: 141/255, blue: 61/255, alpha: 1)
@@ -46,6 +25,9 @@ class ViewController: UIViewController {
     
     // Game engine
     let gameEngine = GameEngine(numberOfQuestions: 10, winThreshold: 60)
+    
+    // Sound engine
+    let soundEngine = SoundEngine()
     
     // Collection of answer buttons. Easy to iterates on a collection.
     var answerButtons: [UIButton] = []
@@ -77,19 +59,11 @@ class ViewController: UIViewController {
         
         lightningProgressCountdownSlice = Float(1.0) / (lightningTimesupDelay / lightningProgressInterval)
         
-        // Load all the sounds of the app
-        loadGameSounds()
-        
         // Welcome sound (Really?!? :)
-        playSound(with: SoundName.START_GAME)
+        soundEngine.playSound(with: SoundName.startGame)
         
         // Keep track of all buttons in an indexed way
-        answerButtons = [
-            firstAnswerButton,
-            secondAnswerButton,
-            thirdAnswerButton,
-            fourthAnswerButton
-        ]
+        answerButtons = [firstAnswerButton, secondAnswerButton, thirdAnswerButton, fourthAnswerButton]
         
         // First message to the user to start the game
         displayGameModes(with: "Choose which type of game you want to play")
@@ -121,12 +95,12 @@ class ViewController: UIViewController {
         updateQuestionText(text: question.label)
         
         // Show only the required answer buttons and set the answer text to the button
-        for choiceIdx in 0..<question.answerChoices.count {
-            let btn = answerButtons[choiceIdx]
-            btn.setTitle(question.answerChoices[choiceIdx], for: UIControlState.normal)
-            btn.isEnabled = true
-            btn.tintColor = UIColor.white
-            btn.isHidden = false
+        for choiceIndex in 0..<question.answerChoices.count {
+            let button = answerButtons[choiceIndex]
+            button.setTitle(question.answerChoices[choiceIndex], for: UIControlState.normal)
+            button.isEnabled = true
+            button.tintColor = UIColor.white
+            button.isHidden = false
         }
         
         // In lightning mode, start the progress bar and the timesup timer
@@ -147,11 +121,11 @@ class ViewController: UIViewController {
         
         // Handle the text, color and sound depending the game state
         if gameEngine.isVictory() {
-            playSound(with: SoundName.WIN_PLAY)
+            soundEngine.playSound(with: SoundName.winPlay)
             gameEndingText = "Victory"
             gameEndingColor = correctAnswerColor
         } else {
-            playSound(with: SoundName.LOSE_PLAY)
+            soundEngine.playSound(with: SoundName.losePlay)
             gameEndingText = "You loose"
             gameEndingColor = wrongAnswerColor
         }
@@ -165,16 +139,16 @@ class ViewController: UIViewController {
      */
     func hideAnswerButtons() {
         // Show the answer buttons
-        for btn in answerButtons {
-            btn.isHidden = true
-            btn.backgroundColor = normalAnswerColor
+        for button in answerButtons {
+            button.isHidden = true
+            button.backgroundColor = normalAnswerColor
         }
     }
     
     /*
      * Update the UI to reflect the user answer to a question
      */
-    func handleQuestionAnswered(isCorrect: Bool) {
+    func handleQuestionAnswered(isAnswerCorrect: Bool) {
         // First, hide the lightning progress bar
         lightningTimesupProgressBar.isHidden = true
         
@@ -184,20 +158,12 @@ class ViewController: UIViewController {
         }
 
         // Reflect the correctness of answers on the answer buttons (change btn color)
-        for btnIdx in 0..<answerButtons.count {
-            if gameEngine.isValidAnswer(with: btnIdx) {
-                answerButtons[btnIdx].backgroundColor = correctAnswerColor
-            } else {
-                answerButtons[btnIdx].backgroundColor = wrongAnswerColor
-            }
+        for buttonIndex in 0..<answerButtons.count {
+            answerButtons[buttonIndex].backgroundColor = gameEngine.isValidAnswer(with: buttonIndex) ? correctAnswerColor : wrongAnswerColor
         }
         
         // Play the correct sound depending the question answer
-        if (isCorrect) {
-            playSound(with: SoundName.CORRECT)
-        } else {
-            playSound(with: SoundName.WRONG)
-        }
+        soundEngine.playSound(with: isAnswerCorrect ? SoundName.correct : SoundName.wrong)
         
         // After the delay, start the next round
         loadNextRoundWithDelay(seconds: nextRoundDelay)
@@ -220,7 +186,7 @@ class ViewController: UIViewController {
      * Start a new game
      */
     func startGame() {
-        playSound(with: SoundName.START_PLAY)
+        soundEngine.playSound(with: SoundName.startPlay)
 
         gameModesView.isHidden = true
         gameEngine.reset()
@@ -232,22 +198,22 @@ class ViewController: UIViewController {
      */
     func timesUp() {
         gameEngine.failQuestion()
-        handleQuestionAnswered(isCorrect: false)
+        handleQuestionAnswered(isAnswerCorrect: false)
     }
     
     /*
      * UI Action to check if the user has correctly answered a question
      */
     @IBAction func checkAnswer(_ sender: UIButton) {
-        for btn in answerButtons {
-            btn.isEnabled = false
-            btn.tintColor = UIColor.black
+        for button in answerButtons {
+            button.isEnabled = false
+            button.tintColor = UIColor.black
         }
         
         var isAnswerCorrect: Bool
         
         // Retrieve the answer from user
-        switch (sender) {
+        switch sender {
             case firstAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 0)
             case secondAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 1)
             case thirdAnswerButton: isAnswerCorrect = gameEngine.answerQuestion(with: 2)
@@ -255,7 +221,7 @@ class ViewController: UIViewController {
             default: isAnswerCorrect = false
         }
         
-        handleQuestionAnswered(isCorrect: isAnswerCorrect)
+        handleQuestionAnswered(isAnswerCorrect: isAnswerCorrect)
     }
     
     /*
@@ -321,24 +287,6 @@ class ViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: calculateDispatchTime(seconds: seconds)) {
             self.nextRound()
         }
-    }
-    
-    /*
-     * Load all the game sounds
-     */
-    func loadGameSounds() {
-        for (name, soundDef) in sounds {
-            let pathToSoundFile = Bundle.main.path(forResource: soundDef.path, ofType: "wav", inDirectory: "sounds")
-            let soundURL = URL(fileURLWithPath: pathToSoundFile!)
-            AudioServicesCreateSystemSoundID(soundURL as CFURL, &(sounds[name]!.sound))
-        }
-    }
-    
-    /*
-     * Play the specified sound
-     */
-    func playSound(with soundName: SoundName) {
-        AudioServicesPlaySystemSound(sounds[soundName]!.sound)
     }
 }
 
