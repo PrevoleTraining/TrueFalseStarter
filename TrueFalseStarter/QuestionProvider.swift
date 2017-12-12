@@ -352,8 +352,6 @@ class QuestionProvider {
         }
         
         currentQuestions = randomQuestions
-        
-        print(currentQuestions.count)
     }
     
     ///

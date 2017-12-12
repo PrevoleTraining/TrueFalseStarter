@@ -124,6 +124,8 @@ class ViewController: UIViewController {
         for choiceIdx in 0..<question.answerChoices.count {
             let btn = answerButtons[choiceIdx]
             btn.setTitle(question.answerChoices[choiceIdx], for: UIControlState.normal)
+            btn.isEnabled = true
+            btn.tintColor = UIColor.white
             btn.isHidden = false
         }
         
@@ -237,6 +239,11 @@ class ViewController: UIViewController {
      * UI Action to check if the user has correctly answered a question
      */
     @IBAction func checkAnswer(_ sender: UIButton) {
+        for btn in answerButtons {
+            btn.isEnabled = false
+            btn.tintColor = UIColor.black
+        }
+        
         var isAnswerCorrect: Bool
         
         // Retrieve the answer from user
